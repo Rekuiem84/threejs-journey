@@ -2,6 +2,7 @@ import * as THREE from "three";
 import gsap from "gsap";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 import GUI from "lil-gui";
+import { RGBELoader } from "three/examples/jsm/Addons.js";
 
 // Debug
 const gui = new GUI({
@@ -19,7 +20,7 @@ window.addEventListener("keydown", (event) => {
 		// Reset the camera position and rotation
 		camera.position.set(0, 0, 8);
 		camera.rotation.set(0, 0, 0);
-		camera.lookAt(group.position);
+		camera.lookAt(plane);
 		controls.update(); // Update controls to reflect the new camera position
 	}
 });
@@ -58,160 +59,169 @@ loadingManager.onError = () => {
 	console.log("Loading error");
 };
 
-const textureLoader = new THREE.TextureLoader(loadingManager);
-const colorTexture = textureLoader.load("/textures/checkerboard-1024x1024.png");
-const alphaTexture = textureLoader.load("/textures/door/alpha.jpg");
-const heightTexture = textureLoader.load("/textures/door/height.jpg");
-const normalTexture = textureLoader.load("/textures/door/normal.jpg");
-const ambientOcclusionTexture = textureLoader.load(
-	"/textures/door/ambientOcclusion.jpg"
+/**
+ * Textures
+ */
+const textureLoader = new THREE.TextureLoader();
+
+const doorColorTexture = textureLoader.load("./textures/door/color.jpg");
+const doorAlphaTexture = textureLoader.load("./textures/door/alpha.jpg");
+const doorAmbientOcclusionTexture = textureLoader.load(
+	"./textures/door/ambientOcclusion.jpg"
 );
-const metalnessTexture = textureLoader.load("/textures/door/metalness.jpg");
-const roughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
+const doorHeightTexture = textureLoader.load("./textures/door/height.jpg");
+const doorNormalTexture = textureLoader.load("./textures/door/normal.jpg");
+const doorMetalnessTexture = textureLoader.load(
+	"./textures/door/metalness.jpg"
+);
+const doorRoughnessTexture = textureLoader.load(
+	"./textures/door/roughness.jpg"
+);
+const matcapTexture = textureLoader.load("./textures/matcaps/8.png");
+const gradientTexture = textureLoader.load("./textures/gradients/5.jpg");
 
-colorTexture.colorSpace = THREE.SRGBColorSpace;
-colorTexture.generateMipmaps = false;
-colorTexture.minFilter = THREE.NearestFilter; // Set the minification filter to nearest
-colorTexture.magFilter = THREE.NearestFilter; // Set the magnification filter to nearest
+doorColorTexture.colorSpace = THREE.SRGBColorSpace;
+matcapTexture.colorSpace = THREE.SRGBColorSpace;
 
-// colorTexture.center.set(0.5, 0.5); // Center the texture vertically
-// colorTexture.rotation = Math.PI / 4; // Rotate the texture by 45 degrees
+// MeshBasicMaterial
+// const material = new THREE.MeshBasicMaterial();
+
+// MeshNormalMaterial
+// const material = new THREE.MeshNormalMaterial();
+// material.flatShading = true;
+
+// MeshMatcapMaterial
+// Permet d'avoir une texture en fonction de l'oriantation de l'objet
+// const material = new THREE.MeshMatcapMaterial();
+// material.matcap = matcapTexture;
+
+// MeshDepthMaterial
+// const material = new THREE.MeshDepthMaterial();
+
+// MeshLambertMaterial
+// const material = new THREE.MeshLambertMaterial();
+
+// MeshPhongMaterial
+// const material = new THREE.MeshPhongMaterial();
+// material.shininess = 200;
+// material.specular = new THREE.Color("#00ffff");
+
+// MeshToonMaterial
+// const material = new THREE.MeshToonMaterial();
+// material.gradientMap = gradientTexture;
+// gradientTexture.minFilter = THREE.NearestFilter;
+// gradientTexture.magFilter = THREE.NearestFilter;
+// //Because we use nearest filter, we can disable mipmapping
+// gradientTexture.generateMipmaps = false;
+
+// MeshStandardMaterial
+// const material = new THREE.MeshStandardMaterial();
+// material.metalness = 1;
+// material.roughness = 1;
+// material.map = doorColorTexture;
+// material.aoMap = doorAmbientOcclusionTexture;
+// material.displacementMap = doorHeightTexture;
+// material.displacementScale = 0.1;
+// material.metalnessMap = doorMetalnessTexture;
+// material.roughnessMap = doorRoughnessTexture;
+// material.normalMap = doorNormalTexture;
+// material.normalScale.set(2, 2);
+
+// MeshPhysicalMaterial
+const material = new THREE.MeshPhysicalMaterial();
+material.metalness = 0;
+material.roughness = 0.2;
+// material.map = doorColorTexture;
+// material.aoMap = doorAmbientOcclusionTexture;
+// material.displacementMap = doorHeightTexture;
+// material.displacementScale = 0.1;
+// material.metalnessMap = doorMetalnessTexture;
+// material.roughnessMap = doorRoughnessTexture;
+// material.normalMap = doorNormalTexture;
+// material.normalScale.set(2, 2);
+
+// // Clearcoat
+// material.clearcoat = 1;
+// material.clearcoatRoughness = 0;
+
+// gui.add(material, "clearcoat").min(0).max(1).step(0.0001);
+// gui.add(material, "clearcoatRoughness").min(0).max(1).step(0.0001);
+
+// // Sheen
+// material.sheen = 1;
+// material.sheenRoughness = 0.25;
+// material.sheenColor.set(1, 1, 1);
+
+// gui.add(material, "sheen").min(0).max(1).step(0.0001);
+// gui.add(material, "sheenRoughness").min(0).max(1).step(0.0001);
+// gui.addColor(material, "sheenColor");
+
+// // Iridescence
+// material.iridescence = 1;
+// material.iridescenceIOR = 1;
+// material.iridescenceThicknessRange = [100, 900];
+
+// gui.add(material, "iridescence").min(0).max(1).step(0.0001);
+// gui.add(material, "iridescenceIOR").min(1).max(2.333).step(0.0001);
+// gui.add(material.iridescenceThicknessRange, "0").min(1).max(1000).step(1);
+// gui.add(material.iridescenceThicknessRange, "1").min(1).max(1000).step(1);
+
+// gui.add(material, "metalness").min(0).max(1).step(0.0001);
+// gui.add(material, "roughness").min(0).max(1).step(0.0001);
+
+// Iridescence
+material.transmission = 1;
+material.ior = 1.4;
+material.thickness = 0.64;
+
+gui.add(material, "transmission").min(0).max(1).step(0.0001);
+gui.add(material, "ior").min(1).max(10).step(0.0001);
+gui.add(material, "thickness").min(0).max(1).step(0.0001);
+
+gui.add(material, "metalness").min(0).max(1).step(0.0001);
+gui.add(material, "roughness").min(0).max(1).step(0.0001);
+
+// material.map = doorColorTexture;
+material.transparent = true;
+// material.alphaMap = doorAlphaTexture;
+material.side = THREE.DoubleSide;
 
 /**
  * Objects
  */
-const group = new THREE.Group();
-scene.add(group);
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 64), material);
+sphere.position.set(-3, 0, 0);
 
-debugObject.cube1Color = "#ff0000";
-// debugObject.cube2Color = "#00ff00";
-// debugObject.cube3Color = "#0000ff";
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2, 100, 100), material);
+plane.position.set(0, 0, 0);
 
-const cube1 = new THREE.Mesh(
-	new THREE.BoxGeometry(
-		1,
-		1,
-		1,
-		debugObject.subdivisions,
-		debugObject.subdivisions,
-		debugObject.subdivisions
-	), // Using subdivisions for the geometry
-	new THREE.MeshBasicMaterial({ map: colorTexture })
+const torus = new THREE.Mesh(
+	new THREE.TorusGeometry(1, 0.25, 64, 128),
+	material
 );
-group.add(cube1);
-// cube1.scale.x = 3;
-// cube1.scale.y = 4;
+torus.position.set(3, 0, 0);
+scene.add(sphere, plane, torus);
 
-// const cube2 = new THREE.Mesh(
-// 	new THREE.BoxGeometry(1, 1, 1),
-// 	new THREE.MeshBasicMaterial({ color: debugObject.cube2Color })
-// );
-// group.add(cube2);
-// cube2.scale.z = 3;
-// cube2.scale.x = 4;
+/**
+ * Light
+ */
+// const ambientLight = new THREE.AmbientLight("#ffffff", 0.2);
+// scene.add(ambientLight);
 
-// const cube3 = new THREE.Mesh(
-// 	new THREE.BoxGeometry(1, 1, 1),
-// 	new THREE.MeshBasicMaterial({ color: debugObject.cube3Color })
-// );
-// group.add(cube3);
-// cube3.scale.z = 4;
-// cube3.scale.y = 3;
+// const pointLight = new THREE.PointLight("#ffffff", 50);
+// pointLight.position.set(2, 3, 4);
+// scene.add(pointLight);
 
-group.rotation.reorder = "YXZ"; // Set rotation order to YXZ
-group.rotation.y = 2 * Math.PI; // Rotate around Y-axis
+/**
+ * Environment map
+ */
+const rgbeLoader = new RGBELoader();
+rgbeLoader.load("./textures/environmentMap/2k.hdr", (environmentMap) => {
+	environmentMap.mapping = THREE.EquirectangularReflectionMapping;
 
-const groupTweaks = gui.addFolder("Global");
-const cube1Tweaks = gui.addFolder("Cube 1");
-const otherTweaks = gui.addFolder("Other Tweaks");
-
-groupTweaks
-	.add(group.position, "x")
-	.min(-5)
-	.max(5)
-	.step(0.01)
-	.name("X Position");
-groupTweaks
-	.add(group.position, "y")
-	.min(-5)
-	.max(5)
-	.step(0.01)
-	.name("Y Position");
-groupTweaks
-	.add(group.position, "z")
-	.min(-5)
-	.max(5)
-	.step(0.01)
-	.name("Z Position");
-groupTweaks.add(group, "visible").name("Show");
-
-cube1Tweaks.add(cube1.material, "wireframe").name("Wireframe cube1");
-// otherTweaks.add(cube2.material, "wireframe").name("Wireframe cube2");
-// otherTweaks.add(cube3.material, "wireframe").name("Wireframe cube3");
-
-// La couleur subit un traitement dans THREE avec les shaders, etc, donc on peut pas directement utiliser le .color
-// cube1Tweaks
-// 	.addColor(debugObject, "cube1Color")
-// 	.name("Cube1 Color")
-// 	.onChange(() => {
-// 		cube1.material.color.set(debugObject.cube1Color);
-// 	});
-// otherTweaks
-// 	.addColor(debugObject, "cube2Color")
-// 	.name("Cube2 Color")
-// 	.onChange(() => {
-// 		cube2.material.color.set(debugObject.cube2Color);
-// 	});
-// otherTweaks
-// 	.addColor(debugObject, "cube3Color")
-// 	.name("Cube3 Color")
-// 	.onChange(() => {
-// 		cube3.material.color.set(debugObject.cube3Color);
-// 	});
-
-debugObject.spin = () => {
-	gsap.to(group.rotation, { y: group.rotation.y + Math.PI * 2 });
-};
-groupTweaks.add(debugObject, "spin").name("Spin Group");
-
-debugObject.subdivisions = 2;
-cube1Tweaks
-	.add(debugObject, "subdivisions")
-	.min(1)
-	.max(10)
-	.step(1)
-	.name("Subdivisions")
-	.onFinishChange(() => {
-		// Permet d'update une fois que l'utilisateur a fini de changer la valeur plutôt qu'en temps réel
-		cube1.geometry.dispose(); // Destroy the old geometry to free memory
-		cube1.geometry = new THREE.BoxGeometry(
-			1,
-			1,
-			1,
-			debugObject.subdivisions,
-			debugObject.subdivisions,
-			debugObject.subdivisions
-		);
-	});
-
-const geometry = new THREE.BufferGeometry();
-const count = 50;
-// Each vertex has 3 components (x, y, z) and we have 3 vertices per triangle
-const positionsArray = new Float32Array(count * 3 * 3);
-
-for (let i = 0; i < count * 3 * 3; i++) {
-	positionsArray[i] = (Math.random() - 0.5) * 4;
-}
-
-const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3);
-geometry.setAttribute("position", positionsAttribute);
-
-const material = new THREE.MeshBasicMaterial({
-	color: "#ffffff",
-	wireframe: true,
+	scene.background = environmentMap;
+	scene.environment = environmentMap;
 });
-const mesh = new THREE.Mesh(geometry, material);
-// scene.add(mesh);
 
 /**
  * Sizes
@@ -235,44 +245,13 @@ window.addEventListener("resize", () => {
 	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
-// window.addEventListener("dblclick", () => {
-// 	const fullscreenElement =
-// 		document.fullscreenElement || document.webkitFullscreenElement;
-
-// 	if (!fullscreenElement) {
-// 		if (canvas.requestFullscreen) {
-// 			canvas.requestFullscreen();
-// 		} else if (canvas.webkitRequestFullscreen) {
-// 			canvas.webkitRequestFullscreen(); // For Safari
-// 		}
-// 	} else {
-// 		if (document.exitFullscreen) {
-// 			document.exitFullscreen();
-// 		} else if (document.webkitExitFullscreen) {
-// 			document.webkitExitFullscreen(); // For Safari
-// 		}
-// 	}
-// });
-
 /**
  * Camera
  */
 const camera = new THREE.PerspectiveCamera(70, aspectRatio, 0.1, 1000);
-// const camera = new THREE.OrthographicCamera(
-// 	-aspectRatio,
-// 	aspectRatio,
-// 	1,
-// 	-1,
-// 	0.1,
-// 	1000
-// );
-camera.position.z = 4;
-// camera.position.set(3, 4, 5);
-camera.lookAt(group.position);
+camera.position.z = 6;
+camera.lookAt(0, 0, 0);
 scene.add(camera);
-
-const axesHelper = new THREE.AxesHelper(2);
-scene.add(axesHelper);
 
 // Controls
 const controls = new OrbitControls(camera, canvas);
@@ -295,15 +274,14 @@ const clock = new THREE.Clock();
 const tick = () => {
 	const elapsedTime = clock.getElapsedTime();
 
-	// Camera movement
-	// camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 8;
-	// camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 8;
-	// camera.position.y = cursor.y * 8;
-	// camera.lookAt(group.position);
+	// Rotate objects
+	sphere.rotation.y = elapsedTime * 0.2;
+	plane.rotation.y = elapsedTime * 0.2;
+	torus.rotation.y = elapsedTime * 0.2;
 
-	// Update objects
-	// group.rotation.y = elapsedTime * Math.PI * 0.5;
-	// group.position.y = Math.sin(elapsedTime);
+	sphere.rotation.x = elapsedTime * -0.2;
+	plane.rotation.x = elapsedTime * -0.2;
+	torus.rotation.x = elapsedTime * -0.2;
 
 	// Update controls
 	controls.update(); // Pour que le damping fonctionne, il faut update les controles à chaque frame
