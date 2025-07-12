@@ -2,6 +2,7 @@ import * as THREE from "three";
 import gsap from "gsap";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 import GUI from "lil-gui";
+import { FontLoader, TextGeometry } from "three/examples/jsm/Addons.js";
 
 /**
  * Debug
@@ -21,23 +22,9 @@ window.addEventListener("keydown", (event) => {
 		// Reset the camera position and rotation
 		camera.position.set(0, 0, 8);
 		camera.rotation.set(0, 0, 0);
-		camera.lookAt(group.position);
+		camera.lookAt(0, 0, 0);
 		controls.update(); // Update controls to reflect the new camera position
 	}
-});
-
-/**
- * Controls
- */
-const cursor = {
-	x: 0,
-	y: 0,
-};
-
-window.addEventListener("mousemove", (event) => {
-	cursor.x = event.clientX / sizes.width - 0.5; // Normalize to [-0.5, 0.5]
-	cursor.y = -(event.clientY / sizes.height - 0.5); // Inverser l'axe Y
-	// console.log(`Cursor position: x=${cursor.x}, y=${cursor.y}`);
 });
 
 /**
@@ -51,13 +38,76 @@ const canvas = document.querySelector("canvas.webgl");
 const scene = new THREE.Scene();
 
 /**
+ * Textures
+ */
+const textureLoader = new THREE.TextureLoader();
+const matcapTexture = textureLoader.load("/textures/matcaps/13.png");
+matcapTexture.colorSpace = THREE.SRGBColorSpace;
+
+/**
+ * Fonts
+ */
+const fontsLoader = new FontLoader();
+fontsLoader.load("/fonts/helvetiker_regular.typeface.json", (font) => {
+	const textGeometry = new TextGeometry("Hello World", {
+		font: font,
+		size: 1,
+		depth: 0.25,
+		curveSegments: 5,
+		bevelEnabled: true,
+		bevelThickness: 0.03,
+		bevelSize: 0.02,
+		bevelOffset: 0,
+		bevelSegments: 3,
+	});
+	textGeometry.center(); // Center the text geometry
+
+	const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture });
+	const text = new THREE.Mesh(textGeometry, textMaterial);
+
+	const numberOfMatcaps = 18;
+
+	console.time("Torus Creation");
+	const torusGeometry = new THREE.TorusGeometry(0.2, 0.1, 16, 100);
+
+	for (let i = 0; i < 300; i++) {
+		const randomX = (Math.random() - 0.5) * 10;
+		const randomY = (Math.random() - 0.5) * 10;
+		const randomZ = (Math.random() - 0.5) * 10;
+
+		// Si les textures étaient toutes identiques, on pourrait les charger avant la boucle
+		const matcapTexture = textureLoader.load(
+			`/textures/matcaps/${(i % numberOfMatcaps) + 1}.png`
+		);
+		matcapTexture.colorSpace = THREE.SRGBColorSpace;
+
+		const torusMaterial = new THREE.MeshMatcapMaterial({
+			matcap: matcapTexture,
+		});
+		const torus = new THREE.Mesh(torusGeometry, torusMaterial);
+
+		torus.position.set(randomX, randomY, randomZ);
+		torus.rotation.x = Math.random() * Math.PI;
+		torus.rotation.y = Math.random() * Math.PI;
+
+		const scale = Math.random() + 0.5;
+		torus.scale.set(scale, scale, scale);
+
+		scene.add(torus);
+	}
+	console.timeEnd("Torus Creation");
+
+	scene.add(text);
+});
+
+/**
  * Objects
  */
 const cube = new THREE.Mesh(
 	new THREE.BoxGeometry(1, 1, 1),
 	new THREE.MeshBasicMaterial({ color: "#ff0000" })
 );
-scene.add(cube);
+// scene.add(cube);
 
 const cubeTweaks = gui.addFolder("Cube 1");
 
@@ -132,9 +182,6 @@ const camera = new THREE.PerspectiveCamera(70, aspectRatio, 0.1, 1000);
 camera.position.z = 4;
 camera.lookAt(cube.position);
 scene.add(camera);
-
-const axesHelper = new THREE.AxesHelper(2);
-scene.add(axesHelper);
 
 /**
  * Controls
