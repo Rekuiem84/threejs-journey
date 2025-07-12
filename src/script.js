@@ -27,20 +27,6 @@ window.addEventListener("keydown", (event) => {
 });
 
 /**
- * Controls
- */
-const cursor = {
-	x: 0,
-	y: 0,
-};
-
-window.addEventListener("mousemove", (event) => {
-	cursor.x = event.clientX / sizes.width - 0.5; // Normalize to [-0.5, 0.5]
-	cursor.y = -(event.clientY / sizes.height - 0.5); // Inverser l'axe Y
-	// console.log(`Cursor position: x=${cursor.x}, y=${cursor.y}`);
-});
-
-/**
  * Canvas
  */
 const canvas = document.querySelector("canvas.webgl");
