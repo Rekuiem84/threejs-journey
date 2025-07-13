@@ -11,19 +11,18 @@ const gui = new GUI({
 	width: 400,
 	title: "Debug UI",
 });
-gui.hide();
+// gui.hide();
 const debugObject = {};
 
 window.addEventListener("keydown", (event) => {
 	if (event.key === "h") {
-		gui.show(gui._hidden); // Toggle visibility of the GUI
-	}
-	if (event.key === "r") {
+		gui.show(gui._hidden); // Toggle visibility of the debug menu
+	} else if (event.key === "r") {
 		// Reset the camera position and rotation
-		camera.position.set(0, 0, 8);
+		camera.position.set(0, 0, 6);
 		camera.rotation.set(0, 0, 0);
 		camera.lookAt(0, 0, 0);
-		controls.update(); // Update controls to reflect the new camera position
+		controls.update();
 	}
 });
 
@@ -37,44 +36,25 @@ const canvas = document.querySelector("canvas.webgl");
  */
 const scene = new THREE.Scene();
 
-/**
- * Textures
- */
-const textureLoader = new THREE.TextureLoader();
-const matcapTexture = textureLoader.load("./textures/matcaps/13.png");
-matcapTexture.colorSpace = THREE.SRGBColorSpace;
+debugObject.torusCount = 200;
+let torusMeshes = [];
 
-/**
- * Fonts
- */
-const fontsLoader = new FontLoader();
-fontsLoader.load("./fonts/helvetiker_regular.typeface.json", (font) => {
-	const textGeometry = new TextGeometry("Hello World", {
-		font: font,
-		size: 1,
-		depth: 0.25,
-		curveSegments: 5,
-		bevelEnabled: true,
-		bevelThickness: 0.03,
-		bevelSize: 0.02,
-		bevelOffset: 0,
-		bevelSegments: 3,
+const updateTorus = () => {
+	// Remove existing torus
+	torusMeshes.forEach((torus) => {
+		scene.remove(torus);
 	});
-	textGeometry.center(); // Center the text geometry
-
-	const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture });
-	const text = new THREE.Mesh(textGeometry, textMaterial);
+	torusMeshes = [];
 
 	const numberOfMatcaps = 18;
-
 	const torusGeometry = new THREE.TorusGeometry(0.2, 0.1, 16, 100);
+	const textureLoader = new THREE.TextureLoader();
 
-	for (let i = 0; i < 300; i++) {
+	for (let i = 0; i < debugObject.torusCount; i++) {
 		const randomX = (Math.random() - 0.5) * 10;
 		const randomY = (Math.random() - 0.5) * 10;
 		const randomZ = (Math.random() - 0.5) * 10;
 
-		// Si les textures étaient toutes identiques, on pourrait les charger avant la boucle
 		const matcapTexture = textureLoader.load(
 			`./textures/matcaps/${(i % numberOfMatcaps) + 1}.png`
 		);
@@ -92,65 +72,76 @@ fontsLoader.load("./fonts/helvetiker_regular.typeface.json", (font) => {
 		const scale = Math.random() + 0.5;
 		torus.scale.set(scale, scale, scale);
 
+		torusMeshes.push(torus);
 		scene.add(torus);
 	}
-
-	scene.add(text);
-});
-
-/**
- * Objects
- */
-const cube = new THREE.Mesh(
-	new THREE.BoxGeometry(1, 1, 1),
-	new THREE.MeshBasicMaterial({ color: "#ff0000" })
-);
-// scene.add(cube);
-
-const cubeTweaks = gui.addFolder("Cube 1");
-
-debugObject.cubeColor = "#ff0000";
-cubeTweaks
-	.addColor(debugObject, "cubeColor")
-	.name("Cube Color")
-	.onChange(() => {
-		cube.material.color.set(debugObject.cubeColor);
-	});
-
-cubeTweaks.add(cube.position, "x").min(-5).max(5).step(0.01).name("X Position");
-cubeTweaks.add(cube.position, "y").min(-5).max(5).step(0.01).name("Y Position");
-cubeTweaks.add(cube.position, "z").min(-5).max(5).step(0.01).name("Z Position");
-cubeTweaks.add(cube, "visible").name("Show");
-
-cubeTweaks.add(cube.material, "wireframe").name("Wireframe cube");
-
-debugObject.subdivisions = 2;
-
-cubeTweaks
-	.add(debugObject, "subdivisions")
-	.min(1)
-	.max(10)
-	.step(1)
-	.name("Subdivisions")
-	.onFinishChange(() => {
-		// Permet d'update une fois que l'utilisateur a fini de changer la valeur plutôt qu'en temps réel
-		cube.geometry.dispose(); // Destroy the old geometry to free memory
-		cube.geometry = new THREE.BoxGeometry(
-			1,
-			1,
-			1,
-			debugObject.subdivisions,
-			debugObject.subdivisions,
-			debugObject.subdivisions
-		);
-	});
-
-debugObject.spin = () => {
-	gsap.to(cube.rotation, { y: cube.rotation.y + Math.PI * 2 });
 };
 
-cubeTweaks.add(debugObject, "spin").name("Spin Group");
+const torusTweaks = gui.addFolder("Torus");
+torusTweaks
+	.add(debugObject, "torusCount")
+	.min(0)
+	.max(2000)
+	.step(1)
+	.name("Number of Torus")
+	.onFinishChange(updateTorus);
+torusTweaks.close();
 
+// Initial torus creation
+updateTorus();
+
+/**
+ * Textures
+ */
+const textureLoader = new THREE.TextureLoader();
+const matcapTexture = textureLoader.load("./textures/matcaps/13.png");
+matcapTexture.colorSpace = THREE.SRGBColorSpace;
+
+/**
+ * Fonts
+ */
+const fontsLoader = new FontLoader();
+
+debugObject.text = "Hello World";
+let textMesh = null;
+
+const updateText = (font) => {
+	if (textMesh) {
+		scene.remove(textMesh);
+		textMesh.geometry.dispose();
+	}
+	const textGeometry = new TextGeometry(debugObject.text, {
+		font: font,
+		size: 1,
+		depth: 0.25,
+		curveSegments: 5,
+		bevelEnabled: true,
+		bevelThickness: 0.03,
+		bevelSize: 0.02,
+		bevelOffset: 0,
+		bevelSegments: 3,
+	});
+	textGeometry.center();
+	const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture });
+	textMesh = new THREE.Mesh(textGeometry, textMaterial);
+	scene.add(textMesh);
+};
+
+let loadedFont = null;
+fontsLoader.load("./fonts/helvetiker_regular.typeface.json", (font) => {
+	loadedFont = font;
+	updateText(font);
+});
+
+const textTweaks = gui.addFolder("Text");
+textTweaks
+	.add(debugObject, "text")
+	.name("Text String")
+	.onFinishChange(() => {
+		if (loadedFont) updateText(loadedFont);
+	});
+
+textTweaks.close();
 /**
  * Sizes
  */
@@ -177,15 +168,14 @@ window.addEventListener("resize", () => {
  * Camera
  */
 const camera = new THREE.PerspectiveCamera(70, aspectRatio, 0.1, 1000);
-camera.position.z = 4;
-camera.lookAt(cube.position);
+camera.position.z = 6;
+camera.lookAt(0, 0, 0);
 scene.add(camera);
 
 /**
  * Controls
  */
 const controls = new OrbitControls(camera, canvas);
-// controls.enabled = false;
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 
