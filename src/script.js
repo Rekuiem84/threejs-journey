@@ -1,93 +1,55 @@
 import * as THREE from "three";
-import gsap from "gsap";
-import { OrbitControls } from "three/examples/jsm/Addons.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import GUI from "lil-gui";
 
 /**
- * Debug
+ * Base
  */
-const gui = new GUI({
-	width: 400,
-	title: "Debug UI",
-});
-gui.hide();
-const debugObject = {};
+// Debug
+const gui = new GUI();
 
-window.addEventListener("keydown", (event) => {
-	if (event.key === "h") {
-		gui.show(gui._hidden); // Toggle visibility of the GUI
-	}
-	if (event.key === "r") {
-		// Reset the camera position and rotation
-		camera.position.set(0, 0, 8);
-		camera.rotation.set(0, 0, 0);
-		camera.lookAt(group.position);
-		controls.update(); // Update controls to reflect the new camera position
-	}
-});
-
-/**
- * Canvas
- */
+// Canvas
 const canvas = document.querySelector("canvas.webgl");
 
-/**
- * Scene
- */
+// Scene
 const scene = new THREE.Scene();
+
+/**
+ * Lights
+ */
+const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0xffffff, 50);
+pointLight.position.x = 2;
+pointLight.position.y = 3;
+pointLight.position.z = 4;
+scene.add(pointLight);
 
 /**
  * Objects
  */
-const cube = new THREE.Mesh(
-	new THREE.BoxGeometry(1, 1, 1),
-	new THREE.MeshBasicMaterial({ color: "#ff0000" })
+// Material
+const material = new THREE.MeshStandardMaterial();
+material.roughness = 0.4;
+
+// Objects
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), material);
+sphere.position.x = -1.5;
+
+const cube = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.75), material);
+
+const torus = new THREE.Mesh(
+	new THREE.TorusGeometry(0.3, 0.2, 32, 64),
+	material
 );
-scene.add(cube);
+torus.position.x = 1.5;
 
-const cubeTweaks = gui.addFolder("Cube 1");
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
+plane.rotation.x = -Math.PI * 0.5;
+plane.position.y = -0.65;
 
-debugObject.cubeColor = "#ff0000";
-cubeTweaks
-	.addColor(debugObject, "cubeColor")
-	.name("Cube Color")
-	.onChange(() => {
-		cube.material.color.set(debugObject.cubeColor);
-	});
-
-cubeTweaks.add(cube.position, "x").min(-5).max(5).step(0.01).name("X Position");
-cubeTweaks.add(cube.position, "y").min(-5).max(5).step(0.01).name("Y Position");
-cubeTweaks.add(cube.position, "z").min(-5).max(5).step(0.01).name("Z Position");
-cubeTweaks.add(cube, "visible").name("Show");
-
-cubeTweaks.add(cube.material, "wireframe").name("Wireframe cube");
-
-debugObject.subdivisions = 2;
-
-cubeTweaks
-	.add(debugObject, "subdivisions")
-	.min(1)
-	.max(10)
-	.step(1)
-	.name("Subdivisions")
-	.onFinishChange(() => {
-		// Permet d'update une fois que l'utilisateur a fini de changer la valeur plutôt qu'en temps réel
-		cube.geometry.dispose(); // Destroy the old geometry to free memory
-		cube.geometry = new THREE.BoxGeometry(
-			1,
-			1,
-			1,
-			debugObject.subdivisions,
-			debugObject.subdivisions,
-			debugObject.subdivisions
-		);
-	});
-
-debugObject.spin = () => {
-	gsap.to(cube.rotation, { y: cube.rotation.y + Math.PI * 2 });
-};
-
-cubeTweaks.add(debugObject, "spin").name("Spin Group");
+scene.add(sphere, cube, torus, plane);
 
 /**
  * Sizes
@@ -97,16 +59,16 @@ const sizes = {
 	height: window.innerHeight,
 };
 
-let aspectRatio = sizes.width / sizes.height;
-
 window.addEventListener("resize", () => {
+	// Update sizes
 	sizes.width = window.innerWidth;
 	sizes.height = window.innerHeight;
-	aspectRatio = sizes.width / sizes.height;
 
-	camera.aspect = aspectRatio;
+	// Update camera
+	camera.aspect = sizes.width / sizes.height;
 	camera.updateProjectionMatrix();
 
+	// Update renderer
 	renderer.setSize(sizes.width, sizes.height);
 	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
@@ -114,21 +76,21 @@ window.addEventListener("resize", () => {
 /**
  * Camera
  */
-const camera = new THREE.PerspectiveCamera(70, aspectRatio, 0.1, 1000);
-camera.position.z = 4;
-camera.lookAt(cube.position);
+// Base camera
+const camera = new THREE.PerspectiveCamera(
+	75,
+	sizes.width / sizes.height,
+	0.1,
+	100
+);
+camera.position.x = 1;
+camera.position.y = 1;
+camera.position.z = 2;
 scene.add(camera);
 
-const axesHelper = new THREE.AxesHelper(2);
-scene.add(axesHelper);
-
-/**
- * Controls
- */
+// Controls
 const controls = new OrbitControls(camera, canvas);
-// controls.enabled = false;
 controls.enableDamping = true;
-controls.dampingFactor = 0.08;
 
 /**
  * Renderer
@@ -138,16 +100,32 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.render(scene, camera);
 
 /**
- * Animation loop
+ * Animate
  */
-const tick = () => {
-	// Update controls
-	controls.update(); // Pour que le damping fonctionne, il faut update les controles à chaque frame
+const clock = new THREE.Clock();
 
+const tick = () => {
+	const elapsedTime = clock.getElapsedTime();
+
+	// Update objects
+	sphere.rotation.y = 0.1 * elapsedTime;
+	cube.rotation.y = 0.1 * elapsedTime;
+	torus.rotation.y = 0.1 * elapsedTime;
+
+	sphere.rotation.x = 0.15 * elapsedTime;
+	cube.rotation.x = 0.15 * elapsedTime;
+	torus.rotation.x = 0.15 * elapsedTime;
+
+	// Update controls
+	controls.update();
+
+	// Render
 	renderer.render(scene, camera);
+
+	// Call tick again on the next frame
 	window.requestAnimationFrame(tick);
 };
+
 tick();
