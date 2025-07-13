@@ -41,14 +41,14 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
-const matcapTexture = textureLoader.load("/textures/matcaps/13.png");
+const matcapTexture = textureLoader.load("./textures/matcaps/13.png");
 matcapTexture.colorSpace = THREE.SRGBColorSpace;
 
 /**
  * Fonts
  */
 const fontsLoader = new FontLoader();
-fontsLoader.load("/fonts/helvetiker_regular.typeface.json", (font) => {
+fontsLoader.load("./fonts/helvetiker_regular.typeface.json", (font) => {
 	const textGeometry = new TextGeometry("Hello World", {
 		font: font,
 		size: 1,
@@ -67,7 +67,6 @@ fontsLoader.load("/fonts/helvetiker_regular.typeface.json", (font) => {
 
 	const numberOfMatcaps = 18;
 
-	console.time("Torus Creation");
 	const torusGeometry = new THREE.TorusGeometry(0.2, 0.1, 16, 100);
 
 	for (let i = 0; i < 300; i++) {
@@ -77,7 +76,7 @@ fontsLoader.load("/fonts/helvetiker_regular.typeface.json", (font) => {
 
 		// Si les textures étaient toutes identiques, on pourrait les charger avant la boucle
 		const matcapTexture = textureLoader.load(
-			`/textures/matcaps/${(i % numberOfMatcaps) + 1}.png`
+			`./textures/matcaps/${(i % numberOfMatcaps) + 1}.png`
 		);
 		matcapTexture.colorSpace = THREE.SRGBColorSpace;
 
@@ -95,7 +94,6 @@ fontsLoader.load("/fonts/helvetiker_regular.typeface.json", (font) => {
 
 		scene.add(torus);
 	}
-	console.timeEnd("Torus Creation");
 
 	scene.add(text);
 });
