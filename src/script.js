@@ -8,6 +8,7 @@ import { RectAreaLightHelper } from "three/examples/jsm/Addons.js";
  */
 // Debug
 const gui = new GUI();
+gui.hide();
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
@@ -20,8 +21,6 @@ const scene = new THREE.Scene();
  */
 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
 scene.add(ambientLight);
-
-gui.add(ambientLight, "intensity").min(0).max(5).step(0.001);
 
 const directionalLight = new THREE.DirectionalLight(0x00fffc, 1);
 directionalLight.position.set(1, 0.25, 0);
@@ -40,7 +39,17 @@ rectAreaLight.lookAt(new THREE.Vector3());
 scene.add(rectAreaLight);
 
 const spotlight = new THREE.SpotLight(0x78ff00, 4.5, 8, Math.PI * 0.1, 0.2, 1);
-spotlight.position.set(2.5, 1, 1);
+spotlight.position.set(2.5, 1, 0.5);
+spotlight.castShadow = true;
+
+spotlight.shadow.mapSize.set(1024 / 2, 1024 / 2);
+spotlight.shadow.camera.near = 0.75;
+spotlight.shadow.camera.far = 6;
+spotlight.shadow.radius = 10; // Blur des edges de l'ombre
+
+const spotlightCameraHelper = new THREE.CameraHelper(spotlight.shadow.camera);
+// scene.add(spotlightCameraHelper);
+
 scene.add(spotlight);
 
 // La spotlight regarde dans la direction de sa target,
@@ -60,6 +69,7 @@ const directionalLightHelper = new THREE.DirectionalLightHelper(
 	0.25
 );
 // scene.add(directionalLightHelper);
+// directionalLight.castShadow = true;
 
 const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.2);
 // scene.add(pointLightHelper);
@@ -88,18 +98,26 @@ material.roughness = 0.4;
 // Objects
 const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), material);
 sphere.position.x = -1.5;
+sphere.receiveShadow = true;
+sphere.castShadow = true;
 
 const cube = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.75), material);
+
+cube.castShadow = true;
+cube.receiveShadow = true;
 
 const torus = new THREE.Mesh(
 	new THREE.TorusGeometry(0.3, 0.2, 32, 64),
 	material
 );
 torus.position.x = 1.5;
+torus.castShadow = true;
 
 const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
 plane.rotation.x = -Math.PI * 0.5;
 plane.position.y = -1;
+
+plane.receiveShadow = true;
 
 scene.add(sphere, cube, torus, plane);
 
@@ -152,6 +170,9 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 /**
  * Animate
