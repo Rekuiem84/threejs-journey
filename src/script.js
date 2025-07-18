@@ -36,7 +36,7 @@ const canvas = document.querySelector("canvas.webgl");
  */
 const scene = new THREE.Scene();
 
-debugObject.torusCount = 200;
+debugObject.torusCount = 256;
 let torusMeshes = [];
 
 const updateTorus = () => {
