@@ -6,7 +6,7 @@ import GUI from "lil-gui";
  * Base
  */
 // Debug
-const gui = new GUI();
+// const gui = new GUI();
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
@@ -17,39 +17,69 @@ const scene = new THREE.Scene();
 /**
  * Lights
  */
-const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
-scene.add(ambientLight);
+// const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+// scene.add(ambientLight);
 
-const pointLight = new THREE.PointLight(0xffffff, 50);
-pointLight.position.x = 2;
-pointLight.position.y = 3;
-pointLight.position.z = 4;
-scene.add(pointLight);
+// const pointLight = new THREE.PointLight(0xffffff, 50);
+// pointLight.position.x = 2;
+// pointLight.position.y = 3;
+// pointLight.position.z = 4;
+// scene.add(pointLight);
 
 /**
- * Objects
+ * Textures
  */
-// Material
-const material = new THREE.MeshStandardMaterial();
-material.roughness = 0.4;
+const textureLoader = new THREE.TextureLoader();
+const particlesTexture = textureLoader.load("./textures/particles/3.png");
 
-// Objects
-const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), material);
-sphere.position.x = -1.5;
+/**
+ * Particles
+ */
+// On créé une buffer geometry vide pour les particules
+// On définit le nombre de particules
+const particlesGeometry = new THREE.BufferGeometry();
+const count = 5000;
 
-const cube = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.75), material);
+// On crée un tableau de positions pour les particules, avec le x, y et z de chacune
+// On remplit le tableau avec des valeurs aléatoires pour chaque particule
+// On créé un tableau de couleurs
+const position = new Float32Array(count * 3);
+const colors = new Float32Array(count * 3);
 
-const torus = new THREE.Mesh(
-	new THREE.TorusGeometry(0.3, 0.2, 32, 64),
-	material
+for (let i = 0; i < count * 3; i++) {
+	position[i] = (Math.random() - 0.5) * 10;
+	colors[i] = Math.random();
+}
+
+// On attribue à chaque particule une position dans la géométrie
+// On précise que chaque position est un vecteur de 3 valeurs (x, y, z)
+particlesGeometry.setAttribute(
+	"position",
+	new THREE.BufferAttribute(position, 3)
 );
-torus.position.x = 1.5;
+// On ajoute un attribut de couleur à la géométrie
+// On précise que chaque couleur est un vecteur de 3 valeurs (r, g, b)
+particlesGeometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
-const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
-plane.rotation.x = -Math.PI * 0.5;
-plane.position.y = -0.65;
+// On crée un matériau pour les particules
+// On définit la taille de chaque particule et si elle doit être affectée par la distance
+const particlesMaterial = new THREE.PointsMaterial({
+	size: 0.1,
+	sizeAttenuation: true,
+	// color: "#a8fff8",
+	vertexColors: true, // Utilise les couleurs définies dans la géométrie
+	alphaMap: particlesTexture,
+	transparent: true,
+	// alphaTest: 0.6,
+	// depthTest: false,
+	depthWrite: false,
+	blending: THREE.AdditiveBlending,
+});
 
-scene.add(sphere, cube, torus, plane);
+// Points
+// On crée un objet Points qui combine la géométrie et le matériau
+const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+scene.add(particles);
 
 /**
  * Sizes
@@ -109,17 +139,11 @@ const clock = new THREE.Clock();
 const tick = () => {
 	const elapsedTime = clock.getElapsedTime();
 
-	// Update objects
-	sphere.rotation.y = 0.1 * elapsedTime;
-	cube.rotation.y = 0.1 * elapsedTime;
-	torus.rotation.y = 0.1 * elapsedTime;
-
-	sphere.rotation.x = 0.15 * elapsedTime;
-	cube.rotation.x = 0.15 * elapsedTime;
-	torus.rotation.x = 0.15 * elapsedTime;
-
 	// Update controls
 	controls.update();
+
+	// Update particles
+	particles.rotation.y = elapsedTime * 0.05;
 
 	// Render
 	renderer.render(scene, camera);
