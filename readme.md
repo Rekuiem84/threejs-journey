@@ -61,4 +61,24 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
 
 ## 🔗 Mes autres projets Three.js
 
-- [Haunted House](https://rekuiem84.github.io/haunted-house-threejs/) — Maison hantée interactive avec lumières, brouillard et animations
+<table>
+  <thead>
+    <tr>
+      <th>Projet</th>
+      <th>Description</th>
+      <th>Aperçu</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://rekuiem84.github.io/haunted-house-threejs/">Haunted House</a></td>
+      <td>Maison hantée interactive avec lumières, brouillard et feux follets animés</td>
+      <td><img src="./docs/haunted-house.png" alt="Aperçu de la maison hantée" width="350"/></td>
+    </tr>
+    <tr>
+      <td><a href="https://rekuiem84.github.io/galaxy-generator/">Galaxy Generator</a></td>
+      <td>Générateur de galaxie avec de nombreux éléments paramétrables</td>
+      <td><img src="./docs/galaxy.png" alt="Aperçu de la galaxie" width="350"/></td>
+    </tr>
+  </tbody>
+</table>
