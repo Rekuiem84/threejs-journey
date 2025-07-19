@@ -57,7 +57,7 @@ Une scène 3D interactive réalisée avec [Three.js](https://threejs.org/), insp
 
 ## 🖼️ Textures
 
-Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nidorx/matcaps) et sont stockées dans le dossier [`static/`](static/).
+Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nidorx/matcaps) et sont stockées dans le dossier [`static/`](static/)
 
 ## 🔗 Mes autres projets Three.js
 
