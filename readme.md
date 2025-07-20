@@ -73,21 +73,21 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
   <tbody>
     <tr>
       <td><a href="https://github.com/rekuiem84/haunted-house-threejs/">Maison hantée</a></td>
-      <td><a href="https://rekuiem84.github.io/haunted-house-threejs/">Voir</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/haunted-house-threejs/">Voir</a></td>
       <td>Maison hantée interactive avec lumières, brouillard et feux follets animés</td>
       <td><img src="./docs/haunted-house.png" alt="Aperçu de la maison hantée" width="350"/></td>
     </tr>
     <tr>
       <td><a href="https://github.com/rekuiem84/galaxy-generator/">Générateur de galaxie</a></td>
-      <td><a href="https://rekuiem84.github.io/galaxy-generator/">Voir</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/galaxy-generator/">Voir</a></td>
       <td>Générateur de galaxie avec de nombreux éléments paramétrables</td>
       <td><img src="./docs/galaxy.png" alt="Aperçu de la galaxie" width="350"/></td>
     </tr>
     <tr>
       <td><a href="https://github.com/rekuiem84/scroll-animation-threejs/">Portfolio 3D</a></td>
-      <td><a href="https://rekuiem84.github.io/scroll-animation-threejs/">Voir</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/scroll-animation-threejs/">Voir</a></td>
       <td>Portfolio 3D d'exemple avec des objets animés</td>
-      <td><img src="./docs/portfolio.png" alt="Aperçu de la galaxie" width="350"/></td>
+      <td><img src="./docs/portfolio.png" alt="Aperçu du portfolio" width="350"/></td>
     </tr>
   </tbody>
 </table>
