@@ -85,7 +85,7 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
     </tr>
     <tr>
       <td><a href="https://github.com/rekuiem84/scroll-animation-threejs/">Portfolio 3D</a></td>
-      <td><a href="https://rekuiem84.github.io/galaxy-generator/">Voir</a></td>
+      <td><a href="https://rekuiem84.github.io/scroll-animation-threejs/">Voir</a></td>
       <td>Portfolio 3D d'exemple avec des objets animés</td>
       <td><img src="./docs/portfolio.png" alt="Aperçu de la galaxie" width="350"/></td>
     </tr>
