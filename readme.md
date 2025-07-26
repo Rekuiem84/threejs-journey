@@ -89,5 +89,11 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
       <td>Portfolio 3D d'exemple avec des objets animés</td>
       <td><img src="./docs/portfolio.png" alt="Aperçu du portfolio" width="350"/></td>
     </tr>
+    <tr>
+      <td><a href="https://github.com/Rekuiem84/basic-physics-threejs">Simulateur physique</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/basic-physics-threejs/">Voir</a></td>
+      <td>Simulateur de physique 3D avec un canon</td>
+      <td><img src="./docs/canon.png" alt="Aperçu du projet" width="350"/></td>
+    </tr>
   </tbody>
 </table>
