@@ -95,5 +95,11 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
       <td>Simulateur de physique 3D avec un canon</td>
       <td><img src="./docs/canon.png" alt="Aperçu du projet" width="350"/></td>
     </tr>
+    <tr>
+      <td><a href="https://github.com/Rekuiem84/3d-models-showcase">Modèles 3D importés</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/3d-models-showcase/">Voir</a></td>
+      <td>Visualiser des modèles 3D complèxes</td>
+      <td><img src="./docs/fox.png" alt="Aperçu du projet" width="350"/></td>
+    </tr>
   </tbody>
 </table>
