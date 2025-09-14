@@ -101,5 +101,11 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
       <td>Visualiser des modèles 3D complèxes</td>
       <td><img src="./docs/fox.png" alt="Aperçu du projet" width="350"/></td>
     </tr>
+    <tr>
+      <td><a href="https://github.com/Rekuiem84/shaders">Shaders</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/shaders/">Voir</a></td>
+      <td>Shader de drapeau flottant</td>
+      <td><img src="./docs/flag.png" alt="Aperçu du projet" width="350"/></td>
+    </tr>
   </tbody>
 </table>
