@@ -107,5 +107,11 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
       <td>Shader de drapeau flottant</td>
       <td><img src="./docs/flag.png" alt="Aperçu du projet" width="350"/></td>
     </tr>
+    <tr>
+      <td><a href="https://github.com/Rekuiem84/shader-patterns">Shader patterns</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/shader-patterns/">Voir</a></td>
+      <td>Customisation d'un shader avec le bruit de Perlin</td>
+      <td><img src="./docs/shader-pattern.png" alt="Aperçu du projet" width="350"/></td>
+    </tr>
   </tbody>
 </table>
