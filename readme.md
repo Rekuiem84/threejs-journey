@@ -131,5 +131,11 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
       <td>Shader de fumée d'un café chaud</td>
       <td><img src="./docs/smoke.png" alt="Aperçu du projet" width="350"/></td>
     </tr>
+    <tr>
+      <td><a href="https://github.com/Rekuiem84/hologram-shader">Hologramme</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/hologram-shader/">Voir</a></td>
+      <td>Objets holographiques</td>
+      <td><img src="./docs/hologram.png" alt="Aperçu du projet" width="350"/></td>
+    </tr>
   </tbody>
 </table>
