@@ -137,5 +137,11 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
       <td>Objets holographiques</td>
       <td><img src="./docs/hologram.png" alt="Aperçu du projet" width="350"/></td>
     </tr>
+    <tr>
+      <td><a href="https://github.com/Rekuiem84/fireworks-shaders">Feux d'artifices</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/fireworks-shaders/">Voir</a></td>
+      <td>Shader de feux d'artifices intéractifs</td>
+      <td><img src="./docs/fireworks.png" alt="Aperçu du projet" width="350"/></td>
+    </tr>
   </tbody>
 </table>
