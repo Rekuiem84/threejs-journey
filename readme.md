@@ -143,5 +143,11 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
       <td>Shader de feux d'artifices intéractifs</td>
       <td><img src="./docs/fireworks.png" alt="Aperçu du projet" width="350"/></td>
     </tr>
+    <tr>
+      <td><a href="https://github.com/Rekuiem84/lights-shading-shaders">Lumières et shading</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/lights-shading-shaders/">Voir</a></td>
+      <td>Shader de lumières custom</td>
+      <td><img src="./docs/lights-shaders.png" alt="Aperçu du projet" width="350"/></td>
+    </tr>
   </tbody>
 </table>
