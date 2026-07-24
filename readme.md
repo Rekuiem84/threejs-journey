@@ -117,7 +117,7 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
       <td><a href="https://github.com/Rekuiem84/raging-sea">Mer agitée</a></td>
       <td align="center"><a href="https://rekuiem84.github.io/raging-sea/">Voir</a></td>
       <td>Shader custom de vagues dans une mer agitée</td>
-      <td><img src="./docs/sea.png" alt="Aperçu du projet" width="350"/></td>
+      <td><img src="./docs/sea-light.png" alt="Aperçu du projet" width="350"/></td>
     </tr>
     <tr>
       <td><a href="https://github.com/Rekuiem84/modified-model-materials">Shader Déformation</a></td>
