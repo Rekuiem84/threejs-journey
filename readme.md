@@ -149,5 +149,11 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
       <td>Shader de lumières custom</td>
       <td><img src="./docs/lights-shaders.png" alt="Aperçu du projet" width="350"/></td>
     </tr>
+    <tr>
+      <td><a href="https://github.com/Rekuiem84/halftone-shading">Halftone shader</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/halftone-shading/">Voir</a></td>
+      <td>Shader de halftone, effet trame de BD</td>
+      <td><img src="./docs/halftone.png" alt="Aperçu du projet" width="350"/></td>
+    </tr>
   </tbody>
 </table>
