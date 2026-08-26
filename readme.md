@@ -161,5 +161,11 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
       <td>Shader réaliste de la terre avec son atmosphère réagissant aux réflections du soleil</td>
       <td><img src="./docs/earth.png" alt="Aperçu du projet" width="350"/></td>
     </tr>
+    <tr>
+      <td><a href="https://github.com/Rekuiem84/cursor-particles-shader">Particules réactives à la souris</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/cursor-particles-shader/">Voir</a></td>
+      <td>Shader de particules réactives au curseur, depuis une image source</td>
+      <td><img src="./docs/cursor-particles.png" alt="Aperçu du projet" width="350"/></td>
+    </tr>
   </tbody>
 </table>
