@@ -155,5 +155,11 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
       <td>Shader de halftone, effet trame de BD</td>
       <td><img src="./docs/halftone.png" alt="Aperçu du projet" width="350"/></td>
     </tr>
+    <tr>
+      <td><a href="https://github.com/Rekuiem84/earth-shaders">Terre et atmosphère</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/earth-shaders/">Voir</a></td>
+      <td>Shader réaliste de la terre avec son atmosphère réagissant aux réflections du soleil</td>
+      <td><img src="./docs/earth.png" alt="Aperçu du projet" width="350"/></td>
+    </tr>
   </tbody>
 </table>
