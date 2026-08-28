@@ -162,10 +162,16 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
       <td><img src="./docs/earth.png" alt="Aperçu du projet" width="350"/></td>
     </tr>
     <tr>
-      <td><a href="https://github.com/Rekuiem84/cursor-particles-shader">Particules réactives à la souris</a></td>
+      <td><a href="https://github.com/Rekuiem84/cursor-particles-shader">Particules réactives</a></td>
       <td align="center"><a href="https://rekuiem84.github.io/cursor-particles-shader/">Voir</a></td>
       <td>Shader de particules réactives au curseur, depuis une image source</td>
       <td><img src="./docs/cursor-particles.png" alt="Aperçu du projet" width="350"/></td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/Rekuiem84/particles-morphing-shader">Morphing de particules</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/particles-morphing-shader/">Voir</a></td>
+      <td>Morphing entre 2 modèles via des particules de leurs vertices</td>
+      <td><img src="./docs/morphing.png" alt="Aperçu du projet" width="350"/></td>
     </tr>
   </tbody>
 </table>
