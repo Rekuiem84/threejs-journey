@@ -173,5 +173,11 @@ Les textures matcaps utilisées proviennent de [ce repo](https://github.com/nido
       <td>Morphing entre 2 modèles via des particules de leurs vertices</td>
       <td><img src="./docs/morphing.png" alt="Aperçu du projet" width="350"/></td>
     </tr>
+    <tr>
+      <td><a href="https://github.com/Rekuiem84/flow-field-particles-shaders">FlowField de particules</a></td>
+      <td align="center"><a href="https://rekuiem84.github.io/flow-field-particles-shaders/">Voir</a></td>
+      <td>Effet de flowfield sur les particules, avec calcul depuis un GPGPU</td>
+      <td><img src="./docs/flow-field.png" alt="Aperçu du projet" width="350"/></td>
+    </tr>
   </tbody>
 </table>
